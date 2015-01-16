@@ -32,7 +32,7 @@ public class RezepteWikiBot extends Wiki {
 
 
     public RezepteWikiBot() {
-        super("http", "www.rezeptewiki.org", "");
+        super("http", "www.kochwiki.org", "/w");
         //setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 3128)));
         setThrottle(1);        
         setUsingCompressedRequests(false);
