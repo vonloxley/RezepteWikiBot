@@ -22,24 +22,20 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
-
 /**
  *
  * @author Niki Hansche
  */
 public class RezepteWikiBot extends Wiki {
 
-
     public RezepteWikiBot() {
         super("http", "www.kochwiki.org", "/w");
         //setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 3128)));
-        setThrottle(1);        
+        setThrottle(1000);
         setUsingCompressedRequests(false);
         setMarkBot(true);
         setMarkMinor(true);
     }
-    
 
     public static RezepteWikiBot buildAndLogin() throws SecurityException {
         RezepteWikiBot rw = null;
