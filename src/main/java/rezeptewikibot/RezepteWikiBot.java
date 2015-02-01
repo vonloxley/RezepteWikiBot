@@ -42,19 +42,19 @@ public class RezepteWikiBot extends Wiki {
         try {
             File f = new File("logindat.rwb");
             if (!f.exists()) {
-                Logger.getLogger(RezepteWikiBot.class.getName()).log(Level.SEVERE, "Bitte erst \"login\" benutzen.");
+                Logger.getLogger("wiki").log(Level.SEVERE, "Bitte erst \"login\" benutzen.");
                 System.exit(1);
             } else {
                 try {
                     rw = (RezepteWikiBot) new ObjectInputStream(new FileInputStream(f)).readObject();
                 } catch (InvalidClassException ex) {
-                    Logger.getLogger(RezepteWikiBot.class.getName()).log(Level.SEVERE, "Bitte erneut \"login\" benutzen.");
+                    Logger.getLogger("wiki").log(Level.SEVERE, "Bitte erneut \"login\" benutzen.");
                     System.exit(1);
                 }
 
             }
         } catch (IOException | ClassNotFoundException ex) {
-            Logger.getLogger(RezepteWikiBot.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger("wiki").log(Level.SEVERE, null, ex);
         }
         return rw;
     }
@@ -98,12 +98,12 @@ public class RezepteWikiBot extends Wiki {
 
             rw.logout();
         } catch (CommandException ex) {
-            Logger.getLogger(RezepteWikiBot.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            Logger.getLogger("wiki").log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 
     private static void errorExit(String message) {
-        Logger.getLogger(RezepteWikiBot.class.getName()).log(Level.SEVERE, message);
+        Logger.getLogger("wiki").log(Level.SEVERE, message);
         System.exit(1);
     }
 
@@ -112,7 +112,7 @@ public class RezepteWikiBot extends Wiki {
         try {
             List<WikiCommand> lwc = new CatBot(p).Input();
             for (WikiCommand wikiCommand : lwc) {
-                Logger.getLogger(RezepteWikiBot.class.getName()).log(Level.INFO, wikiCommand.toString());
+                Logger.getLogger("wiki").log(Level.INFO, wikiCommand.toString());
                 wikiCommand.execute(rw);
             }
         } finally {
