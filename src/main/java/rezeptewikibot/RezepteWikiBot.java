@@ -29,7 +29,7 @@ import java.util.logging.Logger;
 public class RezepteWikiBot extends Wiki {
 
     public RezepteWikiBot() {
-        super("http", "www.kochwiki.org", "/w");
+        super("www.kochwiki.org", "/w");
         //setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 3128)));
         setThrottle(1000);
         setUsingCompressedRequests(false);

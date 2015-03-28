@@ -55,6 +55,17 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>librwb</artifactId>
             <version>${project.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>de.hansche</groupId>
+                    <artifactId>wiki-java</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.wikipedia</groupId>
+            <artifactId>wiki-java</artifactId>
+            <version>0.31-SNAPSHOT</version>
         </dependency>
     </dependencies>
     <properties>
