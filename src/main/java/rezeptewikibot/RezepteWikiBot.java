@@ -83,7 +83,7 @@ public class RezepteWikiBot extends Wiki {
                 rw = buildAndLogin();
             }
 
-            rw.setLoglevel(Level.WARNING);
+            rw.setLogLevel(Level.WARNING);
 
             switch (args[0]) {
                 case "organize":
