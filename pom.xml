@@ -65,7 +65,7 @@
         <dependency>
             <groupId>org.wikipedia</groupId>
             <artifactId>wiki-java</artifactId>
-            <version>0.31-SNAPSHOT</version>
+            <version>0.31-librwb</version>
         </dependency>
     </dependencies>
     <properties>
