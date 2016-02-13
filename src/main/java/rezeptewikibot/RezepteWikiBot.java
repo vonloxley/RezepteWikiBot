@@ -21,6 +21,10 @@ import java.net.Proxy;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Options;
 
 /**
  *
@@ -59,52 +63,50 @@ public class RezepteWikiBot extends Wiki {
         return rw;
     }
 
+    public static CommandLine handleCommandLine(String[] args) throws org.apache.commons.cli.ParseException {
+        Options options = new Options();
+        options.addOption("r", "run", true, "Run script");
+        options.addOption("l", "login", true, "Login");
+        options.addOption("h", "help", false, "Help");
+
+        DefaultParser p = new DefaultParser();
+        CommandLine commandline = p.parse(options, args);
+
+        if (commandline.hasOption("h")) {
+            HelpFormatter helpFormatter = new HelpFormatter();
+            helpFormatter.printHelp("RezepteWikiBot", options);
+            System.exit(0);
+        }
+
+        return commandline;
+    }
+
     /**
      * @param args the command line arguments
      * @throws java.io.FileNotFoundException
      * @throws Rwb.Parser.ParseException
+     * @throws org.apache.commons.cli.ParseException
      */
-    public static void main(String[] args) throws FileNotFoundException, ParseException, IOException {
+    public static void main(String[] args) throws FileNotFoundException, ParseException, IOException, org.apache.commons.cli.ParseException {
         RezepteWikiBot rw;
+        CommandLine cmdl = handleCommandLine(args);
 
         try {
-            if (args.length < 1) {
-                errorExit("Benutzung: java -jar RezepteWiki.jar login <Benutzername> | organize <Dateiname>");
-            }
-
-            if ("login".equals(args[0])) {
-                if (args.length < 2) {
-                    errorExit("Parameter: Benutzername erwartet.");
-                }
+            if (cmdl.hasOption("l")) {
                 rw = new RezepteWikiBot();
-                new Login(args[1]).execute(rw);
+                new Login(cmdl.getOptionValue("l")).execute(rw);
                 rw.saveThis("logindat.rwb");
-            } else {
+            }
+
+            if (cmdl.hasOption("r")) {
                 rw = buildAndLogin();
+                rw.setLogLevel(Level.WARNING);
+                runOrganize(rw, cmdl.getOptionValue("r"));
+                rw.logout();
             }
-
-            rw.setLogLevel(Level.WARNING);
-
-            switch (args[0]) {
-                case "organize":
-                case "run":
-                    if (args.length > 1) {
-                        runOrganize(rw, args[1]);
-                    } else {
-                        errorExit("\"" + args[0] + "\" benötigt einen Dateinamen als Parameter.");
-                    }
-                    break;
-            }
-
-            rw.logout();
         } catch (CommandException ex) {
-            Logger.getLogger("wiki").log(Level.SEVERE, ex.getMessage(), ex);
+            Logger.getLogger("wiki").log(Level.SEVERE, null, ex);
         }
-    }
-
-    private static void errorExit(String message) {
-        Logger.getLogger("wiki").log(Level.SEVERE, message);
-        System.exit(1);
     }
 
     public static void runOrganize(Wiki rw, String filename) throws IOException, ParseException, CommandException, FileNotFoundException {
@@ -117,8 +119,6 @@ public class RezepteWikiBot extends Wiki {
             }
         } finally {
             p.close();
-
         }
     }
-
 }
