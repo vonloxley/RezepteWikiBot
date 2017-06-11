@@ -50,7 +50,9 @@ public class RezepteWikiBot extends Wiki {
                 System.exit(1);
             } else {
                 try {
-                    rw = (RezepteWikiBot) new ObjectInputStream(new FileInputStream(f)).readObject();
+                    try (FileInputStream fis = new FileInputStream(f)){
+                        rw = (RezepteWikiBot) new ObjectInputStream(fis).readObject();
+                    }
                 } catch (InvalidClassException ex) {
                     Logger.getLogger("wiki").log(Level.SEVERE, "Bitte erneut \"login\" benutzen.");
                     System.exit(1);
@@ -59,6 +61,7 @@ public class RezepteWikiBot extends Wiki {
             }
         } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger("wiki").log(Level.SEVERE, null, ex);
+            System.exit(1);
         }
         return rw;
     }
